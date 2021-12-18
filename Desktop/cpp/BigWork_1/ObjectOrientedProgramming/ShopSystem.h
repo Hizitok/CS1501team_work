@@ -11,62 +11,8 @@ using namespace std;
 
 enum level{boss=1,manager,normal =10};
 
-class DtBase;
-class User
-{
-private:
-	string name;
-	string encrypt_pswd;
-	int wealth,phone;
-	static int num;
-public:
-	User();	
-	~User();
-	int lvl = normal;
-	int ID;
-	string name_()	{ return name;}
-	string pswd()	{ return encrypt_pswd;}
-	void purchase_(int cash)	{ wealth = wealth - cash;	}
-	void deposit_(int cash)	{ wealth = wealth + cash;	}
-	bool operator <(User a)	
-	{
-		if(ID == a.ID) ID++;
-	 	return ID < a.ID;
-	}
-	
-	int add_(int l = normal ,const string u_name = "" );
-	friend ostream& operator<<(ostream&, User& pt );
-	friend void DtBase::chg_cus_info();
-	void load_(ifstream &f_);
-	void save_(ofstream &f_);
-};
-
-class Goods{
-private:	
-	string name;
-	int price,storage;
-	static int num;
-public:	
-	Goods();
-	~Goods();	
-	int ID;
-	int add_();
-	int sum_(int);
-	int delete_(long long);
-	string name_(){return name;}
-	bool operator <(Goods a)
-	{
-		if(ID == a.ID) ID++;
-	 	return ID < a.ID;
-	}
-	friend void DtBase::chg_gds_info();
-	friend ostream& operator<<(ostream&, Goods& pt);
-	void load_(ifstream &f_);
-	void save_(ofstream &f_);
-};
-ostream& operator<<(ostream&, User& pt );
-ostream& operator<<(ostream&, Goods& pt);
-
+class User;
+class Goods;
 class DtBase{
 private:	
 	int num_cus,num_gds;
@@ -103,7 +49,16 @@ public:
 	void print_gds(void);
 	void print_cus( vector<int> );
 	void print_gds( vector<int> );
-	
+	void print_cus( int N ){
+		vector<int> cch;	cch.clear();
+		cch.push_back( N );
+		print_cus( cch );
+	}
+	void print_gds( int N ){
+		vector<int> cch;	cch.clear();
+		cch.push_back( N );
+		print_gds( cch );
+	}
 	void cus_buy();
 	void cus_deposit();
 	
@@ -114,6 +69,64 @@ public:
 
 	int create();								
 };
+
+class User
+{
+private:
+	string name;
+	string encrypt_pswd;
+	int wealth,phone;
+	static int num;
+public:
+	User();	
+	~User();
+	int lvl = normal;
+	int ID;
+	string name_()	{ return name;}
+	string pswd()	{ return encrypt_pswd;}
+	void purchase_(int cash)	{ wealth = wealth - cash;	}
+	void deposit_(int cash)	{ wealth = wealth + cash;	}
+	bool operator <(User a)	
+	{
+		if(ID == a.ID) ID++;
+	 	return ID < a.ID;
+	}
+	
+	int add_(int l = normal ,const string u_name = "" );
+	friend ostream& operator<<(ostream&, User& pt );
+	
+	friend void DtBase::chg_cus_info();
+	
+	void load_(ifstream &f_);
+	
+	void save_(ofstream &f_);
+};
+
+class Goods{
+private:	
+	string name;
+	int price,storage;
+	static int num;
+public:	
+	Goods();
+	~Goods();	
+	int ID;
+	int add_();
+	int sum_(int);
+	int delete_(long long);
+	string name_(){return name;}
+	bool operator <(Goods a)
+	{
+		if(ID == a.ID) ID++;
+	 	return ID < a.ID;
+	}
+	friend void DtBase::chg_gds_info();
+	friend ostream& operator<<(ostream&, Goods& pt);
+	void load_(ifstream &f_);
+	void save_(ofstream &f_);
+};
+ostream& operator<<(ostream&, User& pt );
+ostream& operator<<(ostream&, Goods& pt);
 
 int shop_init(DtBase &);
 

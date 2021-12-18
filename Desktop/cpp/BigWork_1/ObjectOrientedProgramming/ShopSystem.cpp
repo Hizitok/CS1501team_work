@@ -236,7 +236,7 @@ void DtBase::chg_cus_info()
 	getline(cin,s);
 	if(login(s) == sub )
 	{
-		cout << "Log in Success!/n\tInput enter to maintain info:";
+		cout << "Log in Success!\n\tInput enter to maintain info:";
 		cout << "\n\tNew Name:";
 		getline(cin,s);
 		if( s.size()<1 ) cus[sub].name = s;
@@ -255,12 +255,27 @@ void DtBase::chg_cus_info()
 		
 		cout << "Revise Successfully!";
 	}
+	//show result
+	print_cus(sub);
 }
 void DtBase::chg_gds_info()
 {
+	string s;
 	int sub = Get_Target_Goods();
-	if( manager_login != 0 ) return;
+	if( manager_login() == 0 ) return;
+	cout << "\n\tInput enter to maintain info:";
+	cout << "\n\tNew Name:";
+	getline(cin,s);
+	if( s.size()<1 ) gds[sub].name = s;
+	cout << "Change Prize?:";
+	getline(cin,s);
+	if( s.size()<1 ) gds[sub].price = stoi(s);
+	cout << "Change Storage?:";
+	getline(cin,s);
+	if( s.size()<1 ) gds[sub].storage = stoi(s);
 	
+	//show result
+	print_gds(sub);
 }
 
 int Goods::sum_(int num)
@@ -288,10 +303,8 @@ void DtBase::cus_buy()
 	cus[ tgt_p ].purchase_( gds[tgt_g].sum_( num_ ) );	
 	
 	// to show the result
-	vector<int> cch;	cch.clear();
-	cch.push_back( tgt_p );
-	cout <<"\n\n\n";	print_cus( cch );
-	cch[0] = tgt_g;	print_gds( cch );
+	print_cus( tgt_p );
+	print_gds( tgt_g );
 	
 }
 void DtBase::cus_deposit() 
@@ -456,8 +469,6 @@ int shop_init(DtBase &dtb)
 	}
 	return 0;
 }
-
-
 		
 int short_cmp(string input_string,string source_string) 
 {	
