@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 	int state;
 	DtBase shop;
 	state = shop_init(shop);
-	while(state)
+	while(state && cin)
 	{
 		state = interact( shop );
 	}

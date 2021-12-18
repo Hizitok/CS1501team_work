@@ -63,7 +63,7 @@ void DtBase::print_gds( vector<int> arr ){
 int DtBase::save_gds(){
 	ofstream  fout;
 	fout.open(file_name+"_goods.sp",ios::out);
-	fout << num_gds<<endl;
+	fout << num_gds <<endl;
 	for(int i = 0;i<num_gds;i++)	gds[i].save_( fout );
 	fout.close();	
 	return 0;
@@ -182,10 +182,8 @@ void DtBase::add_cus()
 	int an;	cin >> an;
 	
 	if( (an-1)*(an-2)!=0 || lvl ==3 ) an = 3 ; 
-	// when the shop has no manager, u cant create one
-	
-	cout << "\tAdding a "<< lv_name(an);
-	
+	// when the shop has no manager, u cant create one	
+	cout << "\tAdding a "<< lv_name(an);	
 	cus[num_cus++] .add_(an);
 }
 void DtBase::add_goods()
@@ -195,7 +193,6 @@ void DtBase::add_goods()
 	if(num_gds)
 		for(int i = 0;i<num_gds;i++) cch[i]=gds[i];		
 	delete[]gds;	gds = cch;	cch = nullptr;
-	
 	gds[num_gds++].add_();
 }
 
@@ -239,8 +236,7 @@ void DtBase::chg_cus_info()
 		cout << "Log in Success!\n\tInput enter to maintain info:";
 		cout << "\n\tNew Name:";
 		getline(cin,s);
-		if( s.size()<1 ) cus[sub].name = s;
-		
+		if( s.size()<1 ) cus[sub].name = s;	
 		cout << "\n\tNew Password:";
 		getline(cin,s);
 		if( s.size()<1 ) 
@@ -252,7 +248,6 @@ void DtBase::chg_cus_info()
 		cout << "\n\t New Phone Number";
 		getline(cin,s);
 		if( s.size()<1 ) cus[sub].phone = stoi(s);
-		
 		cout << "Revise Successfully!";
 	}
 	//show result
@@ -273,7 +268,6 @@ void DtBase::chg_gds_info()
 	cout << "Change Storage?:";
 	getline(cin,s);
 	if( s.size()<1 ) gds[sub].storage = stoi(s);
-	
 	//show result
 	print_gds(sub);
 }
@@ -297,37 +291,27 @@ void DtBase::cus_buy()
 		cout << "\t Password Wrong!";	return;
 	}
 	tgt_g = Get_Target_Goods();
-	
 	cout << "\t How much do you want? "; 
 	cin >> num_;	num_ = abs(num_);
 	cus[ tgt_p ].purchase_( gds[tgt_g].sum_( num_ ) );	
-	
 	// to show the result
 	print_cus( tgt_p );
-	print_gds( tgt_g );
-	
+	print_gds( tgt_g );	
 }
 void DtBase::cus_deposit() 
 {
 	int cash,tgt_cus;
-	
-	if( manager_login()  )
-	{
+	if( manager_login() ){
 		cout << "\t Log in Success with License\n";
 		tgt_cus = Get_Target_Customer();
-		if(tgt_cus != no_object)
-		{	
+		if(tgt_cus != no_object){
 			cout << "\tInput the cash:";
 			cin >> cash;
 			cus[ tgt_cus ].deposit_(cash); 		
 		}
 	}
 	// to show the result
-	vector<int> cch;
-	cch.clear();
-	cch.push_back( tgt_cus );
-	print_cus( cch );
-	
+	print_cus(tgt_cus);
 }
 
 // query returns a vector with all posibilities ( )
@@ -390,7 +374,6 @@ int DtBase::Get_Target_Goods()
 	}
 	return cch[0];
 }
-
 
 int DtBase::create()
 {

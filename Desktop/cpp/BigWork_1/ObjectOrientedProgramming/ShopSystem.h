@@ -93,12 +93,10 @@ public:
 	}
 	
 	int add_(int l = normal ,const string u_name = "" );
-	friend ostream& operator<<(ostream&, User& pt );
-	
+	friend ostream& operator<<(ostream&, User& pt );	
 	friend void DtBase::chg_cus_info();
 	
-	void load_(ifstream &f_);
-	
+	void load_(ifstream &f_);	
 	void save_(ofstream &f_);
 };
 
