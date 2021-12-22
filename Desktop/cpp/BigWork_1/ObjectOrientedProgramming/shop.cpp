@@ -1,6 +1,7 @@
 #include "ShopSystem.h"
 #include<iostream>
 #include<vector>
+#include<conio.h>
 using namespace std;
 
 int shop_init(DtBase &sp);
@@ -22,7 +23,7 @@ int main(int argc, char** argv)
 
 int interact(DtBase &sp)
 {
-	int input;
+	char input;
 	vector<int> b;
 	string s;
 	cout << "\n\t Operation Privilege:\t " << lv_name( sp.lvl ) << endl;
@@ -36,52 +37,54 @@ int interact(DtBase &sp)
 	cout << "\t 7 :Query customer info" << endl;
 	cout << "\t 8 :Query goods info" << endl;
 	if(sp.lvl <= 2){
-		cout << "\t 9 :Change Customer Info" << endl;
-		cout << "\t 10:Change Goods Info" << endl;
-		cout << "\t 11:Delete a customer" << endl;
-		cout << "\t 12:Delete Goods" << endl;	
+		cout << "\t q :Change Customer Info" << endl;
+		cout << "\t w :Change Goods Info" << endl;
+		cout << "\t e :Delete a customer" << endl;
+		cout << "\t r :Delete Goods" << endl;	
 	}
-	cout << "\n\t -1: Clear Screen" << endl;
+	cout << "\n\t ~: Clear Screen" << endl;
 	cout << "\t 0 :Save & Quit" << endl;
-	cin >> input;	
-	if(sp.lvl == 3 && input >=9) input = -1;
+	input = getch();	
+	if(sp.lvl == 3 && input >= 56) input = '`';
 	switch(input)
 	{
-		case -1:
+		case '`':
 			system("cls"); break;
-		case 1:
-			sp.print_cus();	break;
-		case 2:
+		case '0':
+			return 0; break;
+		case '1':
+			sp.print_cus();	break;//BUG
+		case '2':
 			sp.print_gds();	break;
-		case 3:
+		case '3':
 			sp.add_cus(); break;
-		case 4:
+		case '4':
 			sp.add_goods(); break;
-		case 5:
+		case '5':
 			sp.cus_buy();	break;
-		case 6:
+		case '6':
 			sp.cus_deposit();	break;
-		case 7:
+		case '7':
 			cout << "\tInput the key:";
-			while(s.size()==0)getline(cin,s);
+			while( s.size()==0 )getline(cin,s);
 			b = sp.query_cus(s);
 			sp.print_cus( b );
 			break;
-		case 8:
+		case '8':
 			cout << "\tInput the key:";
-				while(s.size()==0)getline(cin,s);
+				while( s.size()==0 )getline(cin,s);
 				b = sp.query_goods(s);
 				sp.print_gds( b );
 			break;	
-		case 9:
+		case 'q':
 			sp.chg_cus_info();
 			break;
-		case 10:
+		case 'w':
 			sp.chg_gds_info();
 			break;
-		case 11:
+		case 'e':
 			sp.dlt_cus();	break;	
-		case 12:
+		case 'r':
 			sp.dlt_goods();	break;	
 	}
 	return input;

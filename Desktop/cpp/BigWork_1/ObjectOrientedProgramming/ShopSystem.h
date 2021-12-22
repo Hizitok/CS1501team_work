@@ -8,8 +8,7 @@
 #include<algorithm>
 
 using namespace std;
-
-enum level{boss=1,manager,normal =10};
+enum level{boss=1,manager,normal};
 
 class User;
 class Goods;
@@ -73,9 +72,9 @@ public:
 class User
 {
 private:
-	string name;
+	string name,phone;
 	string encrypt_pswd;
-	int wealth,phone;
+	int wealth;
 	static int num;
 public:
 	User();	
@@ -86,12 +85,20 @@ public:
 	string pswd()	{ return encrypt_pswd;}
 	void purchase_(int cash)	{ wealth = wealth - cash;	}
 	void deposit_(int cash)	{ wealth = wealth + cash;	}
-	bool operator <(User a)	
+	bool operator <(User &a)	
 	{
 		if(ID == a.ID) ID++;
 	 	return ID < a.ID;
 	}
-	
+	User operator =(User &a)
+	{
+		ID = a.ID;
+		name = a.name.substr(); 
+		phone = a.phone.substr();
+		encrypt_pswd =  a.encrypt_pswd.substr() ;
+		wealth = a. wealth;
+	 	return *this;
+	}
 	int add_(int l = normal ,const string u_name = "" );
 	friend ostream& operator<<(ostream&, User& pt );	
 	friend void DtBase::chg_cus_info();
@@ -117,6 +124,14 @@ public:
 	{
 		if(ID == a.ID) ID++;
 	 	return ID < a.ID;
+	}
+	Goods operator =(Goods a)
+	{
+		ID = a.ID;
+		name = a.name.substr() ;
+		price = a. price;
+		storage = a.storage;
+	 	return *this;
 	}
 	friend void DtBase::chg_gds_info();
 	friend ostream& operator<<(ostream&, Goods& pt);

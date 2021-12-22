@@ -12,28 +12,31 @@ int Goods::num=1;
 const int no_object = -1;
 User::User(){
 	name = "Unknown"+to_string(num);
-	ID = 10000+(num++);
-	wealth=0,phone=0;
+	ID = 10000+num;
+	wealth=0;
 }	
 User::~User(){		}
 Goods::Goods(){	ID = 100000+(num++)*19 % 10000;}
 Goods::~Goods(){	}
 
-ostream& operator<<(ostream& os, User& p )
+ostream& operator<<(ostream& ios, User& p )
 {
-	os << "\t"<<lv_name(p.lvl)<<"\t" << p.ID <<"\t\t";
-	os << p.name <<"\t\t"<< p.wealth <<"\t\t"<< p.phone;
+	ios << "\t"<<lv_name(p.lvl)<<"\t" << p.ID <<"\t\t";
+	ios << p.name <<"\t\t"<< p.wealth <<"\t\t"<< p.phone;
+	return ios;
 }
-ostream& operator<<(ostream& os, Goods& p)
+ostream& operator<<(ostream& ios, Goods& p)
 {
-	os <<"\t"<< p.ID <<"\t "<< p.name <<"\t\t"<< p.price<<"\t"<< p.storage;
+	ios <<"\t"<< p.ID <<"\t "<< p.name <<"\t\t"<< p.price <<"\t"<< p.storage;
+	return ios;
 }
 
 void DtBase::print_cus(void){
-	sort(cus,cus+num_cus);
+	sort( cus , cus+num_cus );
+	sort( cus , cus+num_cus );
 	cout <<"\n\t Number of Customers: "<< num_cus <<endl;
 	cout <<"\tLevel\t\t ID\t\tName\t\tWealth\t\tPhone Number\n";
-	for(int i = 0; i<num_cus ;i++) cout << cus[i] << endl;
+	for(int i = 0; i < num_cus ;i++) cout << cus[i] << endl;
 	//	( cus[i] ).show_();
 }
 void DtBase::print_gds(void){
@@ -76,7 +79,7 @@ int DtBase::load_gds(){
 		}
 		fin >> num_gds;
 		if(num_gds == 0) return 0; 
-		gds = new Goods[num_gds+2];
+		gds = new Goods[ num_gds + 1 ];
 		for(int i = 0;i<num_gds;i++)	gds[i].load_( fin );	
 	fin.close();
 	return 0;
@@ -85,7 +88,7 @@ int DtBase::save_cus(){
 	ofstream  fout;
 	fout.open(file_name+"_user.sp",ios::out);
 	fout << num_cus <<endl;
-	for(int i = 0; i< num_cus ; i++)	cus[i].save_( fout );	
+	for(int i = 0; i < num_cus ; i++ )	cus[i].save_( fout );	
 	fout.close();
 	return 0;
 }
@@ -97,8 +100,8 @@ int DtBase::load_cus(){
 		}	
 		fin >> num_cus;		
 		if(num_cus == 0) return 0; 
-		cus = new User[num_cus+2];
-		for(int i = 0; i< num_cus ; i++)	cus[i].load_( fin );
+		cus = new User[ num_cus + 1 ];
+		for(int i = 0; i < num_cus ; i++ )	cus[i].load_( fin );
 	fin.close();
 	return 0;
 }
@@ -113,31 +116,33 @@ void Goods::save_(ofstream &fout ){
 	fout << price<<" "<<storage<<endl;
 }
 void User::load_(ifstream &fin){
-	fin >>lvl >>ID ;
-	getline(fin,name,'\n');	
+	fin >> lvl >> ID ;
 	// notice that u need to read a "\n" ,btw
 	getline(fin,name,'\n');
+	getline(fin,name,'\n');
 	getline(fin,encrypt_pswd,'\n');
-	fin >>wealth >>phone;
+	fin >> wealth;
+	getline(fin, phone );
 }
 void User::save_(ofstream &fout){
 	fout << lvl <<" " << ID <<endl;
 	fout << name <<endl;
 	fout << encrypt_pswd <<endl;
-	fout << wealth << " "<<phone<<endl;	
+	fout << wealth << " " << phone <<endl;	
 	//cout << encrypt_pswd<<endl;
 }
 //IO Part Completed 
 
 int User::add_(int level_,const string u_name)
 {
-	int rpt=0;
+	int rpt=0,flag = 0;
 	lvl = level_;
 	string a,b;
 	a = u_name; b = "-";
 	// notice that u need to read a "\n"
 	// rpt means repeat times
 	if(u_name == ""){
+		flag = 1;
 		cout << "\t Name:";
 		while( rpt++ <2 && a=="")getline(cin,a);
 		if( a=="" )	a = "Unknown_"+to_string(num++);	
@@ -153,10 +158,16 @@ int User::add_(int level_,const string u_name)
 			cout << "\t Different password!\n\t Please Try again";
 	}
 	encrypt_pswd = encrypt(a);
-	cout << "\t Password set Successfully!\n\t Input the wealth: ";
-	cin >> wealth;
-	cout << "\t Input Phone Number: ";
-	cin >> phone;
+	cout << "\t Password set Successfully!\n";
+	
+	if(flag)
+	{
+		cout << "\t Input the wealth: ";
+		cin >> wealth;
+		cout << "\t Input Phone Number: ";
+		cin >> phone;
+	}
+	
 	cout << "\t New user is added Successfully!\n";
 	return 0;
 } 
@@ -231,15 +242,15 @@ void DtBase::chg_cus_info()
 	string s,s2;
 	cout << "\nPlease check your identity.Password:";
 	getline(cin,s);
-	if(login(s) == sub )
+	if( login(s) == sub )
 	{
 		cout << "Log in Success!\n\tInput enter to maintain info:";
 		cout << "\n\tNew Name:";
 		getline(cin,s);
-		if( s.size()<1 ) cus[sub].name = s;	
+		if( s.size()>1 ) cus[sub].name = s;	
 		cout << "\n\tNew Password:";
 		getline(cin,s);
-		if( s.size()<1 ) 
+		if( s.size()>1 ) 
 		{
 			cout << "\n\tConfirm New Password:";
 			getline(cin,s2);
@@ -247,7 +258,7 @@ void DtBase::chg_cus_info()
 		}
 		cout << "\n\t New Phone Number";
 		getline(cin,s);
-		if( s.size()<1 ) cus[sub].phone = stoi(s);
+		if( s.size()>1 ) cus[sub].phone = s;
 		cout << "Revise Successfully!";
 	}
 	//show result
