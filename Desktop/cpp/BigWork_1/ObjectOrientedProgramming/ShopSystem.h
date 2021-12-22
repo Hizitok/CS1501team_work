@@ -92,7 +92,7 @@ public:
 	}
 	User operator =(User &a)
 	{
-		ID = a.ID;
+		lvl = a.lvl,ID = a.ID;
 		name = a.name.substr(); 
 		phone = a.phone.substr();
 		encrypt_pswd =  a.encrypt_pswd.substr() ;
