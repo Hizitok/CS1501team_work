@@ -53,7 +53,7 @@ int interact(DtBase &sp)
 		case '0':
 			return 0; break;
 		case '1':
-			sp.print_cus();	break;//BUG
+			sp.print_cus();	break;
 		case '2':
 			sp.print_gds();	break;
 		case '3':

@@ -12,7 +12,7 @@ int Goods::num=1;
 const int no_object = -1;
 User::User(){
 	name = "Unknown"+to_string(num);
-	ID = 10000+num;
+	ID = 10000+(num++);
 	wealth=0;
 }	
 User::~User(){		}
@@ -33,14 +33,13 @@ ostream& operator<<(ostream& ios, Goods& p)
 
 void DtBase::print_cus(void){
 	sort( cus , cus+num_cus );
-	sort( cus , cus+num_cus );
 	cout <<"\n\t Number of Customers: "<< num_cus <<endl;
 	cout <<"\tLevel\t\t ID\t\tName\t\tWealth\t\tPhone Number\n";
 	for(int i = 0; i < num_cus ;i++) cout << cus[i] << endl;
 	//	( cus[i] ).show_();
 }
 void DtBase::print_gds(void){
-	sort(gds,gds+num_gds);
+	sort( gds , gds+num_gds );
 	cout <<"\n\t Number of Goods: "<< num_gds <<endl;
 	cout << "\t ID \t Name  \t\tPrice \tStorage \n";
 	for(int i = 0; i<num_gds ;i++) cout << gds[i] << endl;
@@ -79,7 +78,7 @@ int DtBase::load_gds(){
 		}
 		fin >> num_gds;
 		if(num_gds == 0) return 0; 
-		gds = new Goods[ num_gds + 1 ];
+		gds = new Goods[ num_gds + 2 ];
 		for(int i = 0;i<num_gds;i++)	gds[i].load_( fin );	
 	fin.close();
 	return 0;
@@ -100,7 +99,7 @@ int DtBase::load_cus(){
 		}	
 		fin >> num_cus;		
 		if(num_cus == 0) return 0; 
-		cus = new User[ num_cus + 1 ];
+		cus = new User[ num_cus + 2 ];
 		for(int i = 0; i < num_cus ; i++ )	cus[i].load_( fin );
 	fin.close();
 	return 0;
@@ -149,7 +148,7 @@ int User::add_(int level_,const string u_name)
 		name = a;
 	}	// do not use content because use Unknown_%d
 	name = a;	
-	while(a!=b){		
+	while(a!=b && cin){		
 		cout << "\n\t Input password:";
 		getline(cin, a);
 		cout << "\t Confirm password:";
@@ -183,10 +182,13 @@ int Goods::add_()
 void DtBase::add_cus()
 {
 	User *cch;
-	cch = new User[2+num_cus];
-	if(num_cus)
-		for(int i=0 ; i<num_cus ; i++ ) cch[i]=cus[i];
-	delete[]cus;	cus = cch;	cch = nullptr;
+	cch = new User[2 + num_cus ];
+	
+	for(int i=0 ; i<num_cus ; i++ ) cch[i]=cus[i];
+	
+	if(num_cus)	delete[]cus;
+		
+	cus = cch;	cch = nullptr;
 	
 	cout << "\t please input your information below\n";
 	cout << "Input the privilege (1 for top, 2 for normal,others for customer)";
@@ -200,10 +202,14 @@ void DtBase::add_cus()
 void DtBase::add_goods()
 {
 	Goods *cch;
-	cch = new Goods[2+(num_gds)];
-	if(num_gds)
-		for(int i = 0;i<num_gds;i++) cch[i]=gds[i];		
-	delete[]gds;	gds = cch;	cch = nullptr;
+	cch = new Goods[2 + num_gds ];
+	
+	for(int i = 0;i<num_gds;i++) cch[i] = gds[i];
+	
+	if(num_gds)delete[]gds;
+	
+	gds = cch;	cch = nullptr;
+	
 	gds[num_gds++].add_();
 }
 
@@ -219,6 +225,7 @@ void DtBase::dlt_cus()
 	delete[]cus;	cus = cch;	cch = nullptr;
 	num_cus--;
 	lvl = cus[0].lvl;
+	cout << "Rest:\t";
 	print_cus();
 }		
 void DtBase::dlt_goods()
@@ -232,6 +239,7 @@ void DtBase::dlt_goods()
 	}
 	delete[]gds;	gds = cch;	cch = nullptr;
 	num_gds--;
+	cout << "Rest:\t";
 	print_gds();
 }	
 // Add and Delete Part Completed
@@ -262,6 +270,7 @@ void DtBase::chg_cus_info()
 		cout << "Revise Successfully!";
 	}
 	//show result
+	
 	print_cus(sub);
 }
 void DtBase::chg_gds_info()
