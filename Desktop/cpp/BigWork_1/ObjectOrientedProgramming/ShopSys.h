@@ -31,7 +31,7 @@ private:
 	// return who has the top privilege when many has same pswd
 public:
 	DtBase(){	num_cus=0,num_gds=0;	}
-	int lvl = normal;
+	int lvl ;
 	string file_name;
 
 	void add_cus();
@@ -46,6 +46,7 @@ public:
 
 	void print_cus(void);
 	void print_gds(void);
+	
 	void print_cus( vector<int> );
 	void print_gds( vector<int> );
 	void print_cus( int N ){
@@ -85,19 +86,22 @@ public:
 	string pswd()	{ return encrypt_pswd;}
 	void purchase_(int cash)	{ wealth = wealth - cash;	}
 	void deposit_(int cash)	{ wealth = wealth + cash;	}
-	bool operator <(User &a)	
+	bool operator <(User const &a)
 	{
+		if(lvl != a.lvl ) return lvl < a.lvl;
 		if(ID == a.ID) ID++;
 	 	return ID < a.ID;
 	}
-	User operator =(User &a)
+	
+	User operator=(const User &a)
 	{
-		lvl = a.lvl,ID = a.ID;
+		lvl = a.lvl;
+		ID = a.ID;
 		name = a.name.substr(); 
 		phone = a.phone.substr();
 		encrypt_pswd =  a.encrypt_pswd.substr() ;
-		wealth = a. wealth;
-	 	return *this;
+		wealth = a.wealth;
+	 	return a;
 	}
 	int add_(int l = normal ,const string u_name = "" );
 	friend ostream& operator<<(ostream&, User& pt );	
@@ -120,8 +124,7 @@ public:
 	int sum_(int);
 	int delete_(long long);
 	string name_(){return name;}
-	bool operator <(Goods a)
-	{
+	bool operator <(Goods a){
 		if(ID == a.ID) ID++;
 	 	return ID < a.ID;
 	}
@@ -142,6 +145,15 @@ ostream& operator<<(ostream&, User& pt );
 ostream& operator<<(ostream&, Goods& pt);
 
 int shop_init(DtBase &);
+
+//bool cmp_gds(Goods &a, Goods &b)
+//{
+//	return a.ID < b.ID;
+//}
+//bool cmp_cus(User &a, User &b)
+//{
+//	return a.ID < b.ID;
+//}
 
 int abs(int);
 string encrypt(string);

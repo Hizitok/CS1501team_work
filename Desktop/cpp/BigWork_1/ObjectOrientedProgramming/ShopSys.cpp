@@ -1,4 +1,4 @@
-#include "ShopSystem.h"
+#include "class.h"
 #include<iostream>
 #include<string>
 #include<fstream>
@@ -186,15 +186,14 @@ void DtBase::add_cus()
 	
 	for(int i=0 ; i<num_cus ; i++ ) cch[i]=cus[i];
 	
-	if(num_cus)	delete[]cus;
-		
+	if(num_cus)	delete[]cus;		
 	cus = cch;	cch = nullptr;
 	
 	cout << "\t please input your information below\n";
 	cout << "Input the privilege (1 for top, 2 for normal,others for customer)";
-	int an;	cin >> an;
 	
-	if( (an-1)*(an-2)!=0 || lvl ==3 ) an = 3 ; 
+	char an;	cin >> an;
+	if( (an-49)*(an-50)!=0 || lvl ==3 ) an = 3 ;  // asc('1') = 49
 	// when the shop has no manager, u cant create one	
 	cout << "\tAdding a "<< lv_name(an);	
 	cus[num_cus++] .add_(an);
@@ -206,39 +205,48 @@ void DtBase::add_goods()
 	
 	for(int i = 0;i<num_gds;i++) cch[i] = gds[i];
 	
-	if(num_gds)delete[]gds;
-	
+	if(num_gds)delete[]gds;	
 	gds = cch;	cch = nullptr;
 	
 	gds[num_gds++].add_();
 }
-
+//BUG ::unknown step that  level of shop operator changes
 void DtBase::dlt_cus()
 {
 	if( manager_login() == 0 ) return;
 	int sub = Get_Target_Customer(); // return subscript
-	User *cch = new User[ num_cus-1 ];
+	
 	if(sub != no_object ){
+		User *cch = new User[ num_cus-1 ];
+		
 		for(int i = 0; i<sub ; i++) cch[i]=cus[i];	
 		for(int i = sub+1 ; i<num_cus ;i++ ) cch[ i-1 ] = cus[i];
+		
+		delete[]cus;	cus = cch;	cch = nullptr;
+		num_cus--;
+		//if( sub == 0 ) lvl = cus[0].lvl;
+		cout << "delete done.\n";
 	}
-	delete[]cus;	cus = cch;	cch = nullptr;
-	num_cus--;
 	lvl = cus[0].lvl;
+	//print result
 	cout << "Rest:\t";
 	print_cus();
 }		
+
 void DtBase::dlt_goods()
 {
 	if( manager_login() == 0 ) return;
 	int sub = Get_Target_Goods(); // return subscript
-	Goods *cch = new Goods[ num_gds-1 ];
+
 	if(sub != no_object ){
+		Goods *cch = new Goods[ num_gds-1 ];
 		for(int i = 0; i<sub ; i++) cch[i]=gds[i];	
 		for(int i = sub+1 ; i<num_cus ;i++ ) cch[ i-1 ] = gds[i];
+		
+		delete[]gds;	gds = cch;	cch = nullptr;
+		num_gds--;
 	}
-	delete[]gds;	gds = cch;	cch = nullptr;
-	num_gds--;
+
 	cout << "Rest:\t";
 	print_gds();
 }	
@@ -247,6 +255,7 @@ void DtBase::dlt_goods()
 void DtBase::chg_cus_info()
 {
 	int sub = Get_Target_Customer();
+	if(sub == no_object) return;
 	string s,s2;
 	cout << "\nPlease check your identity.Password:";
 	getline(cin,s);
@@ -277,6 +286,7 @@ void DtBase::chg_gds_info()
 {
 	string s;
 	int sub = Get_Target_Goods();
+	if(sub == no_object) return;
 	if( manager_login() == 0 ) return;
 	cout << "\n\tInput enter to maintain info:";
 	cout << "\n\tNew Name:";
@@ -322,12 +332,13 @@ void DtBase::cus_deposit()
 {
 	int cash,tgt_cus;
 	if( manager_login() ){
-		cout << "\t Log in Success with License\n";
+	
 		tgt_cus = Get_Target_Customer();
 		if(tgt_cus != no_object){
-			cout << "\tInput the cash:";
+			cout << "\tInput the cash(abs):";
 			cin >> cash;
-			cus[ tgt_cus ].deposit_(cash); 		
+			cash = abs(cash);
+			cus[ tgt_cus ].deposit_( cash ); 		
 		}
 	}
 	// to show the result
@@ -371,7 +382,8 @@ int DtBase::Get_Target_Customer()
 	vector<int> cch;
 	string a;
 	while(cch.size() !=1 ){	
-		cout << "\tMore details needed.Input the Target Customer or -q to quit:";	
+		cout << "\n\tInput the Target Customer Info:( name part or ID )";
+		cout << "\n\tMore details needed.Input the Target or -q to quit:";	
 		get_content(a);
 		if(a == "-q") return no_object;
 		cch.clear();
@@ -385,7 +397,8 @@ int DtBase::Get_Target_Goods()
 	vector<int> cch;
 	string a;
 	while(cch.size() !=1 ){	
-		cout << "\tMore details needed.Input Target Goods or -q to quit:";	
+		cout << "\n\tInput the target Goods Info:( name part or ID )";
+		cout << "\n\tMore details needed.Input Target Goods or -q to quit:";	
 		get_content(a);
 		if(a == "-q") return no_object;
 		cch.clear();
@@ -431,7 +444,7 @@ int DtBase::manager_login()
 	}
 	return 0;
 }
-int DtBase::login( string pswd )
+int DtBase::login( string pswd ) // return subscript
 {
 	int ans = no_object;
 	for(int i = 0; i< num_cus ; i++)	
@@ -465,7 +478,9 @@ int shop_init(DtBase &dtb)
 		//User[0] is the administrator
 		n = dtb.login( s , 0 );
 		if( n!="error" ){
-			cout << "\t Sign in successfully!\n\t Welcome, "<< n <<"\n\n";	
+			cout << "\t Sign in successfully!\n\t Welcome, "<< n <<"\n\n";
+
+			dtb.lvl = 1;
 			return 1;
 		}
 		cout << "password wrong!";			
@@ -475,10 +490,10 @@ int shop_init(DtBase &dtb)
 		
 int short_cmp(string input_string,string source_string) 
 {	
-// notice that when source== "",it return 1 for any input 
+	// notice that when source== "",it return 1 for any input 
 	return ( source_string.substr(0,input_string.size() ) ==  input_string);
 }
-int abs(int tgt){	// just a absolute func
+int abs(int &tgt){	// just a absolute func
 	return ( tgt>0 ) ? tgt : -tgt;
 }
 string get_content(string &target)

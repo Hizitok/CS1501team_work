@@ -1,4 +1,4 @@
-#include "ShopSystem.h"
+#include "class.h"
 #include<iostream>
 #include<vector>
 #include<conio.h>
@@ -65,13 +65,13 @@ int interact(DtBase &sp)
 		case '6':
 			sp.cus_deposit();	break;
 		case '7':
-			cout << "\tInput the key:";
+			cout << "\tInput the keyword or part of ID:";
 			while( s.size()==0 )getline(cin,s);
 			b = sp.query_cus(s);
 			sp.print_cus( b );
 			break;
 		case '8':
-			cout << "\tInput the key:";
+			cout << "\tInput the keyword or part of ID:";
 				while( s.size()==0 )getline(cin,s);
 				b = sp.query_goods(s);
 				sp.print_gds( b );
