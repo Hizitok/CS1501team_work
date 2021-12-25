@@ -1,4 +1,4 @@
-#include "class.h"
+#include "ShopSys.h"
 #include<iostream>
 #include<vector>
 #include<conio.h>

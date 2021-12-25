@@ -63,7 +63,7 @@ public:
 	void cus_deposit();
 	
 	string login(string,int);	// p = password ,return name of the User
-	
+	void get_lvl();
 	int save_all(){		return save_cus() + save_gds(); }
 	int load_all(){		return load_cus() + load_gds();	}
 
@@ -88,8 +88,9 @@ public:
 	void deposit_(int cash)	{ wealth = wealth + cash;	}
 	bool operator <(User const &a)
 	{
-		if(lvl != a.lvl ) return lvl < a.lvl;
 		if(ID == a.ID) ID++;
+		if(lvl != a.lvl ) return lvl < a.lvl;
+		
 	 	return ID < a.ID;
 	}
 	

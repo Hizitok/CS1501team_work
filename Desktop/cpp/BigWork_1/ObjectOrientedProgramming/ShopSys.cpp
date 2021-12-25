@@ -1,4 +1,4 @@
-#include "class.h"
+#include "ShopSys.h"
 #include<iostream>
 #include<string>
 #include<fstream>
@@ -278,6 +278,7 @@ void DtBase::chg_cus_info()
 		if( s.size()>1 ) cus[sub].phone = s;
 		cout << "Revise Successfully!";
 	}
+	lvl = cus[0].lvl;
 	//show result
 	
 	print_cus(sub);
@@ -427,7 +428,7 @@ string DtBase::login(string p,int user){	 // p = password ,return name of the Us
 	
 	if( ( cus[user].pswd() ).size()<=1 )	flag =1; 	
 	if( encrypt(p) == cus[user].pswd() )	flag =1; 	
-	if(flag)	lvl = cus[user].lvl;
+	//if(flag)	lvl = cus[user].lvl;
 	return (flag)?( cus[user].name_() ):("error");
 }
 int DtBase::manager_login()
@@ -479,15 +480,17 @@ int shop_init(DtBase &dtb)
 		n = dtb.login( s , 0 );
 		if( n!="error" ){
 			cout << "\t Sign in successfully!\n\t Welcome, "<< n <<"\n\n";
-
-			dtb.lvl = 1;
+			dtb.get_lvl();
 			return 1;
 		}
 		cout << "password wrong!";			
 	}
 	return 0;
 }
-		
+void DtBase::get_lvl()
+{
+	lvl = cus[0].lvl;
+}		
 int short_cmp(string input_string,string source_string) 
 {	
 	// notice that when source== "",it return 1 for any input 
