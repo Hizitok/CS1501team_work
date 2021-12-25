@@ -45,7 +45,7 @@ int interact(DtBase &sp)
 	cout << "\n\t ~: Clear Screen" << endl;
 	cout << "\t 0 :Save & Quit" << endl;
 	input = getch();	
-	if(sp.lvl == 3 && input >= 56) input = '`';
+	if(sp.lvl == normal && input >= 56) input = '`';
 	switch(input)
 	{
 		case '`':

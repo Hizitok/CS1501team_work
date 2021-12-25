@@ -3,9 +3,7 @@
 
 #include<string>
 #include<cstring>
-#include<fstream>
 #include<vector>
-#include<algorithm>
 
 using namespace std;
 enum level{boss=1,manager,normal};
@@ -26,7 +24,7 @@ private:
 	int save_gds();
 	int load_gds();
 	
-	int login( string );		// p = password ,return subscript of the User 
+	int login( string );	// p = password ,return subscript of the User 
 	int manager_login();	//return 1 when log as manager
 	// return who has the top privilege when many has same pswd
 public:
@@ -86,10 +84,8 @@ public:
 	{
 		if(ID == a.ID) ID++;
 		if(lvl != a.lvl ) return lvl < a.lvl;
-		
 	 	return ID < a.ID;
 	}
-	
 	User operator=(const User &a)
 	{
 		lvl = a.lvl;
@@ -125,11 +121,10 @@ public:
 		if(ID == a.ID) ID++;
 	 	return ID < a.ID;
 	}
-	Goods operator =(Goods a)
-	{
+	Goods operator =(Goods a){
 		ID = a.ID;
-		name = a.name.substr() ;
-		price = a. price;
+		name = a.name.substr();
+		price = a.price;
 		storage = a.storage;
 	 	return *this;
 	}
