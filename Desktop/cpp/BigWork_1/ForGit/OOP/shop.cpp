@@ -36,6 +36,7 @@ int interact(DtBase &sp)
 	cout << "\t 6 :Customer deposit" << endl;
 	cout << "\t 7 :Query customer info" << endl;
 	cout << "\t 8 :Query goods info" << endl;
+	cout << "\t 9 :Macroscope Query" << endl;
 	if(sp.lvl <= 2){
 		cout << "\t q :Change Customer Info" << endl;
 		cout << "\t w :Change Goods Info" << endl;
@@ -61,9 +62,9 @@ int interact(DtBase &sp)
 		case '4':
 			sp.add_goods(); break;
 		case '5':
-			sp.cus_buy();	break;
+			sp.user_buy();	break;
 		case '6':
-			sp.cus_deposit();	break;
+			sp.user_deposit();	break;
 		case '7':
 			cout << "\tInput the keyword or part of ID:";
 			while( s.size()==0 )getline(cin,s);
@@ -75,6 +76,9 @@ int interact(DtBase &sp)
 				while( s.size()==0 )getline(cin,s);
 				b = sp.query_goods(s);
 				sp.print_gds( b );
+			break;
+		case '9':
+			sp.macro();
 			break;	
 		case 'q':
 			sp.chg_cus_info();

@@ -12,23 +12,21 @@ class User;
 class Goods;
 class DtBase{
 private:	
-	int num_cus,num_gds;
+	int num_cus,num_gds,dlt_;
 	User *cus;	
 	Goods *gds;
 	// cus[0] is the user using it, so check idendity is necessary
 	int Get_Target_Customer(); // return subscript
-	int Get_Target_Goods();
-	
+	int Get_Target_Goods();	
 	int save_cus();
 	int load_cus();
 	int save_gds();
-	int load_gds();
-	
+	int load_gds();	
 	int login( string );	// p = password ,return subscript of the User 
 	int manager_login();	//return 1 when log as manager
 	// return who has the top privilege when many has same pswd
 public:
-	DtBase(){	num_cus=0,num_gds=0;	}
+	DtBase(){	num_cus=0,num_gds=0;dlt_=0;	}
 	int lvl ;
 	string file_name;
 
@@ -44,17 +42,16 @@ public:
 
 	void print_cus(void);
 	void print_gds(void);
+	void macro(void);
+	int cash_stat(int level_);
 	
 	void print_cus( vector<int> );
 	void print_gds( vector<int> );
-	void print_cus( int N ){
-		print_cus( vector<int> (1,N) );
-	}
-	void print_gds( int N ){
-		print_gds( vector<int> (1,N) );
-	}
-	void cus_buy();
-	void cus_deposit();
+	void print_cus( int N ){	print_cus( vector<int> (1,N) );	}
+	void print_gds( int N ){	print_gds( vector<int> (1,N) );	}
+	
+	void user_buy();
+	void user_deposit();
 	
 	string login(string,int);	// p = password ,return name of the User
 	void get_lvl();
@@ -70,17 +67,18 @@ private:
 	string name,phone;
 	string encrypt_pswd;
 	int wealth;
-	static int num;
+	static int name_num;
 public:
 	User();	
 	~User();
 	int lvl = normal;
 	int ID;
-	string name_()	{ return name;}
-	string pswd()	{ return encrypt_pswd;}
-	void purchase_(int cash)	{ wealth = wealth - cash;	}
+	string name_()	{ return name;			}
+	string pswd()	{ return encrypt_pswd;	}
+	void purchase_(Goods& , int&);
 	void deposit_(int cash)	{ wealth = wealth + cash;	}
-	bool operator <(User const &a)
+	void chg_info();
+	bool operator <(const User &a)
 	{
 		if(ID == a.ID) ID++;
 		if(lvl != a.lvl ) return lvl < a.lvl;
@@ -97,8 +95,9 @@ public:
 	 	return a;
 	}
 	int add_(int l = normal ,const string u_name = "" );
-	friend ostream& operator<<(ostream&, User& pt );	
-	friend void DtBase::chg_cus_info();
+	
+	friend ostream& operator<<(ostream&, User& pt );
+	friend int DtBase::cash_stat(int level_);
 	
 	void load_(ifstream &f_);	
 	void save_(ofstream &f_);
@@ -108,27 +107,27 @@ class Goods{
 private:	
 	string name;
 	int price,storage;
-	static int num;
+	static int name_num;
 public:	
 	Goods();
 	~Goods();	
 	int ID;
 	int add_();
 	int sum_(int);
-	int delete_(long long);
+	int sold(int num_);
+	void chg_info();
 	string name_(){return name;}
-	bool operator <(Goods a){
+	bool operator <(const Goods a){
 		if(ID == a.ID) ID++;
 	 	return ID < a.ID;
 	}
-	Goods operator =(Goods a){
+	Goods operator =(const Goods a){
 		ID = a.ID;
 		name = a.name.substr();
 		price = a.price;
 		storage = a.storage;
 	 	return *this;
 	}
-	friend void DtBase::chg_gds_info();
 	friend ostream& operator<<(ostream&, Goods& pt);
 	void load_(ifstream &f_);
 	void save_(ofstream &f_);
