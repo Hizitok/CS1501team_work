@@ -457,8 +457,7 @@ int User::add_(int level_,const string u_name)
 	encrypt_pswd = encrypt(a);
 	cout << "\t Password set Successfully!\n";
 
-	if(flag)
-	{
+	if(flag){
 		cout << "\t Input the wealth: ";
 		cin >> wealth;
 		cout << "\t Input Phone Number: ";
@@ -475,8 +474,10 @@ int Goods::add_()
 	get_content(name);
 	cout << "\t Input price:";
 	cin >> price;
+	price = abs(price); 
 	cout << "\t Input storage:";
 	cin >> storage;
+	storage = abs(storage);
 	return 0;
 }
 void DtBase::add_cus()

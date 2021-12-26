@@ -15,7 +15,7 @@ private:
 	int num_cus,num_gds,dlt_;
 	User *cus;	
 	Goods *gds;
-	// cus[0] is the user using it, so check idendity is necessary
+	// cus[0] is the default user using it, so check idendity is necessary
 	int Get_Target_Customer(); // return subscript
 	int Get_Target_Goods();	
 	int save_cus();
@@ -29,29 +29,28 @@ public:
 	DtBase(){	num_cus=0,num_gds=0;dlt_=0;	}
 	int lvl ;
 	string file_name;
-
+	//These below give a interface to operate class User and class Goods
 	void add_cus();
 	void dlt_cus();			
 	void add_goods();
 	void dlt_goods(); // delete goods
 	void chg_cus_info();
 	void chg_gds_info();
-	
+	void user_buy();
+	void user_deposit();
+    // Functions below will return all the possible substript list when has multiple answers	
 	vector<int> query_cus(string);
 	vector<int> query_goods(string);
-
+ 	// print the list or single one feat. subscript, void = print all
 	void print_cus(void);
 	void print_gds(void);
-	void macro(void);
-	int cash_stat(int level_);
-	
 	void print_cus( vector<int> );
 	void print_gds( vector<int> );
 	void print_cus( int N ){	print_cus( vector<int> (1,N) );	}
 	void print_gds( int N ){	print_gds( vector<int> (1,N) );	}
 	
-	void user_buy();
-	void user_deposit();
+	void macro(void);
+	int cash_stat(int level_);
 	
 	string login(string,int);	// p = password ,return name of the User
 	void get_lvl();

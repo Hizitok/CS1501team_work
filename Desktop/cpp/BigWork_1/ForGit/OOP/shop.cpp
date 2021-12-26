@@ -78,7 +78,7 @@ int interact(DtBase &sp)
 				sp.print_gds( b );
 			break;
 		case '9':
-			sp.macro();
+			sp.macro(); // fucking macroscope query
 			break;	
 		case 'q':
 			sp.chg_cus_info();

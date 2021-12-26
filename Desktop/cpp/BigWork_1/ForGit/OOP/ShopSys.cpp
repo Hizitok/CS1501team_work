@@ -213,8 +213,10 @@ int Goods::add_()
 	get_content(name);
 	cout << "\t Input price:";
 	cin >> price;
+	price = abs(price); 
 	cout << "\t Input storage:";
 	cin >> storage;
+	storage = abs(storage);
 	return 0;
 }
 void DtBase::add_cus()
