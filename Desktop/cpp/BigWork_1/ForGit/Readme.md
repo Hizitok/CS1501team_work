@@ -1,7 +1,7 @@
 # MIKU's ShopSystem Readme.md
-Manager : Sun Jianyao
-Chief Coding : Hu Zhengtao
-Coding ：Zhou JiaChen 
+- Manager : Sun Jianyao
+- Chief Coding : Hu Zhengtao
+- Coding ：Zhou JiaChen 
 This program is for the final work of C++ learning courses.
 #### Thanks
     Thanks to Mr Zhou's persistent work, he give us the first version and framework of the program
