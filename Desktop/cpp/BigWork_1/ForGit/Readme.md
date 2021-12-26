@@ -1,11 +1,12 @@
 # MIKU's ShopSystem Readme.md
 - Manager : Sun Jianyao
-- Chief Coding : Hu Zhengtao
+- Chief Coding : Hu Zhengtao 
 - Coding ：Zhou JiaChen 
 - This program is for the final work of C++ learning courses.
 #### Thanks
-    Thanks to Mr Zhou's persistent work, he give us the first version and framework of the program
-    Thanks to Mr Hu's reconstruction for coding, 
+    Thanks to Mr.Zhou's persistent work, he give us the first version and framework of the program
+    Thanks to Mr.Hu's for his reconstruction of coding, and he write this readme.md
+    Thanks to Mr.Sun for his writing lab report
 #### Why it is named after Hatsune Miku?
 When the first vision completed, Mr. Sun Jianyao came to my Domitory and ask for a name for it.
 Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then, he point at it and happliy said, let us name our project after this cute doll 
