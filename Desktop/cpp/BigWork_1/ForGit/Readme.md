@@ -1,4 +1,4 @@
-# ** MIKU's ShopSystem Readme.md**
+# MIKU's ShopSystem Readme.md
 Manager : Sun Jianyao
 Chief Coding : Hu Zhengtao
 Coding ：Zhou JiaChen 
