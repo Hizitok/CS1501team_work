@@ -37,7 +37,9 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
         It's FEATURE! Not a BUG!
     2. The Boss(Chief) and manager have the same Privilege , aiming to show that every labour are equal
     3. You can not have negative price or negative storage for goods, 
-        and you can not have negative wealth customers,BUT you can have nagative wealth Chief and Managers!(rofl) 
+        and you can not have negative wealth customers,every negative input will turn into a positive one.
+        
+        BUT you can have nagative wealth for Chief and Managers!(rofl) 
 
 ## 4.Functions 
     0. When the save file doesn't exist, create one as the database
