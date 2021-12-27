@@ -23,11 +23,11 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
         Or you can compile the source code 
         Source: (You can get it from https://github.com/Hizi70k/Final_work/tree/master/Desktop/cpp/BigWork_1/ForGit)
 
-        | Objected Oriented   | Procedure Oriented|
-        |---|---
-        | ShopSys.h           | null              |
-        | ShopSys.cpp         | null              |
-        | Shop.cpp            | main.cpp          |
+| Objected Oriented   | Procedure Oriented|
+|---|---
+| ShopSys.h           | null              |
+| ShopSys.cpp         | null              |
+| Shop.cpp            | main.cpp          |
 
 ## 3. Operation Instruction
     Just do what you want as the program shows you
