@@ -1,7 +1,6 @@
 # MIKU's ShopSystem Readme.md
 - Manager : Sun Jianyao
-- Chief Coding : Hu Zhengtao 
-- Coding ：Zhou JiaChen 
+- Coding : Hu Zhengtao ， Zhou JiaChen 
 - This program is for the final work of C++ learning courses.
 #### Thanks
     Thanks to Mr.Zhou's persistent work, he give us the first version and framework of the program
@@ -23,6 +22,7 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
         Just double click the shop.exe or open the cmd input " ~/shop" , ~ is where the shop.exe stays
         Or you can compile the source code 
         Source: (You can get it from https://github.com/Hizi70k/Final_work/tree/master/Desktop/cpp/BigWork_1/ForGit)
+
         Objected Oriented   | Procedure Oriented
         --------------------|--------------------
         ShopSys.h           | null
@@ -71,8 +71,7 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
     1. Class DtBase
         private:	
             int num_cus,num_gds,dlt_;
-           	User *cus;	
-            Goods *gds;
+           	User *cus;	    Goods *gds;
             // cus[0] is the default user using it, so check idendity is necessary
             int Get_Target_Customer(); // return subscript when only one can accept the condition
             int Get_Target_Goods();	
@@ -86,7 +85,7 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
 
             //These below give a interface to class User and class Goods
             void add_cus();
-            void dlt_cus();			
+            void dlt_cus();	
             void add_goods();
             void dlt_goods(); // delete goods
             void chg_cus_info();
@@ -107,7 +106,9 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
             void print_gds( vector<int> );
             void print_cus( int N ){	print_cus( vector<int> (1,N) );	}
             void print_gds( int N ){	print_gds( vector<int> (1,N) );	}
-            void macro(void); //macroscope to show the quantity of live users and others
+
+            void macro(void);
+             //macroscope to show the quantity of live users and others
 
            
 
