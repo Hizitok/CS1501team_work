@@ -299,7 +299,7 @@ void DtBase::chg_cus_info()
 	string s,s2;
 	cout << "\nPlease check your identity.Password:";
 	getline(cin,s);
-	if( login(s) == sub )
+	if( login(s,sub) != "error" )
 		cus[sub].chg_info();
 	
 	lvl = cus[0].lvl;
@@ -528,7 +528,6 @@ string DtBase::login(string p,int user)  	 // p = password ,return name of the U
 
 	if( ( cus[user].pswd() ).size()<=1 )	flag =1;
 	if( encrypt(p) == cus[user].pswd() )	flag =1;
-	//if(flag)	lvl = cus[user].lvl;
 	return (flag)?( cus[user].name_() ):("error");
 }
 int DtBase::manager_login()

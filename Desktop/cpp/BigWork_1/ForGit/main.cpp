@@ -563,9 +563,9 @@ void DtBase::chg_cus_info()
 	string s,s2;
 	cout << "\nPlease check your identity.Password:";
 	getline(cin,s);
-	if( login(s) == sub )
+	if( login(s,sub) != "error" )
 		cus[sub].chg_info();
-
+	
 	lvl = cus[0].lvl;
 	//show result
 	print_cus(sub);
