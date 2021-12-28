@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include<string>
 #include<cstring>
@@ -6,81 +5,29 @@
 #include<fstream>
 #include<algorithm>
 #include<conio.h>
+#define cheat_ "Administrator"
+#define abs( X )  ( X>0 ) ? X : -X
 
 using namespace std;
 enum level {boss=1,manager,normal};
 const int no_object = -1;
-#define cheat_ "Administrator"
 
 class User;
 class Goods;
-class DtBase
-{
-	private:
-		int num_cus,num_gds,dlt_;
-		User *cus;
-		Goods *gds;
-		// cus[0] is the user using it, so check idendity is necessary
-		int Get_Target_Customer(); // return subscript
-		int Get_Target_Goods();
-		int save_cus();
-		int load_cus();
-		int save_gds();
-		int load_gds();
-		int login( string );	// p = password ,return subscript of the User
-		int manager_login();	//return 1 when log as manager
-		// return who has the top privilege when many has same pswd
-	public:
-		DtBase()
-		{
-			num_cus=0,num_gds=0,dlt_=0;
-		}
-		int lvl ;
-		string file_name;
+int lvl ;
+string file_name;
 
-		void add_cus();
-		void dlt_cus();
-		void add_goods();
-		void dlt_goods(); // delete goods
-		void chg_cus_info();
-		void chg_gds_info();
+vector<int> query_cus(string);
+vector<int> query_goods(string);
 
-		vector<int> query_cus(string);
-		vector<int> query_goods(string);
 
-		void print_cus(void);
-		void print_gds(void);
-		void macro(void);
-		int cash_stat(int level_);
+void macro(void);
+int cash_stat(int level_);
+void user_buy();
+void user_deposit();
 
-		void print_cus( vector<int> );
-		void print_gds( vector<int> );
-		void print_cus( int N )
-		{
-			print_cus( vector<int> (1,N) );
-		}
-		void print_gds( int N )
-		{
-			print_gds( vector<int> (1,N) );
-		}
-
-		void user_buy();
-		void user_deposit();
-
-		string login(string,int);	// p = password ,return name of the User
-		void get_lvl();
-		int save_all()
-		{
-			return save_cus() + save_gds();
-		}
-		int load_all()
-		{
-			return load_cus() + load_gds();
-		}
-
-		int create();
-};
-
+string login(string,int);	// p = password ,return name of the User
+void get_lvl();
 class User
 {
 	private:
@@ -89,16 +36,12 @@ class User
 		int wealth;
 		static int name_num;
 	public:
-		User()
-		{
+		User()	{
 			name = "Unknown"+to_string(name_num);
 			ID = 10000+(name_num++);
 			wealth=0;
 		}
-		~User()
-		{
-			name_num--;
-		}
+		~User()	{	name_num--;	}
 		int lvl = normal;
 		int ID;
 		string name_()
@@ -134,7 +77,7 @@ class User
 		int add_(int l = normal ,const string u_name = "" );
 
 		friend ostream& operator<<(ostream&, User& pt );
-		friend int DtBase::cash_stat(int level_);
+		friend int cash_stat(int level_);
 
 		void load_(ifstream &f_);
 		void save_(ofstream &f_);
@@ -147,30 +90,19 @@ class Goods
 		int price,storage;
 		static int name_num;
 	public:
-		Goods()
-		{
-			ID = 100000+(name_num++)*19 % 10000;
-		}
-		~Goods()
-		{
-			name_num--;
-		}
+		Goods()		{	ID = 100000+(name_num++)*19 % 10000;	}
+		~Goods()	{	name_num--;	}
 		int ID;
 		int add_();
 		int sum_(int);
 		int sold(int num_);
 		void chg_info();
-		string name_()
-		{
-			return name;
-		}
-		bool operator <(const Goods a)
-		{
+		string name_()	{	return name;	}
+		bool operator <(const Goods a){
 			if(ID == a.ID) ID++;
 			return ID < a.ID;
 		}
-		Goods operator =(const Goods a)
-		{
+		Goods operator =(const Goods a){
 			ID = a.ID;
 			name = a.name.substr();
 			price = a.price;
@@ -181,6 +113,16 @@ class Goods
 		void load_(ifstream &f_);
 		void save_(ofstream &f_);
 };
+int num_cus,num_gds,dlt_;
+User *cus;
+Goods *gds;
+// cus[0] is the user using it, so check idendity is necessary
+int Get_Target_Customer(); // return subscript
+int Get_Target_Goods();
+
+int login( string );	// p = password ,return subscript of the User
+int manager_login();	//return 1 when log as manager
+// return who has the top privilege when many has same pswd
 
 string encrypt(string s)  		// encrypt a string,maybe can be proved
 {
@@ -196,19 +138,13 @@ string lv_name(int a)  	// a DULL func
 	if(a==2) return "Manager ";
 	return "Customer";
 }
-void DtBase::get_lvl()
-{
-	lvl = cus[0].lvl;
-}
+
 int short_cmp(string input_string,string source_string)
 {
 	// notice that when source== "",it return 1 for any input
 	return ( source_string.substr(0,input_string.size() ) ==  input_string);
 }
-int abs(int tgt)  	// just a absolute func
-{
-	return ( tgt>0 ) ? tgt : -tgt;
-}
+
 string get_content(string &target)
 {
 	target = "";
@@ -216,7 +152,7 @@ string get_content(string &target)
 	while( target[0] == ' ') target = target.substr(1);
 	return target;
 }
-string DtBase::login(string p,int user)  	 // p = password ,return name of the User
+string login(string p,int user)  	 // p = password ,return name of the User
 {
 // for user[int] to login
 //if cant sign in , return "error"
@@ -229,26 +165,24 @@ string DtBase::login(string p,int user)  	 // p = password ,return name of the U
 	//if(flag)	lvl = cus[user].lvl;
 	return (flag)?( cus[user].name_() ):("error");
 }
-int DtBase::manager_login()
+int manager_login()
 {
 	string s;
 	cout << "Please login as Manager.Password:";
 	get_content(s);
 	int oprtor;  // operator( literally )
 	oprtor = login( s );
-	if( cus[ oprtor ].lvl <=2  )
-	{
+	if( cus[ oprtor ].lvl <=2  ){
 		cout << "\t Log in Successfully with License\n";
 		return 1;
 	}
 	return 0;
 }
-int DtBase::login( string pswd )   // return subscript
+int login( string pswd )   // return subscript
 {
 	int ans = no_object;
 	for(int i = 0; i< num_cus ; i++)
-		if( login(pswd,i) !="error" )
-		{
+		if( login(pswd,i) !="error" )	{
 			if(ans == no_object) ans = i;
 			ans = ( cus[i].lvl < cus[ans].lvl ) ? i : ans ;
 		}
@@ -256,38 +190,17 @@ int DtBase::login( string pswd )   // return subscript
 	if( ans != no_object )cout << "\n\t login as:"<< cus[ans].name_() <<endl;
 	return ans;
 }
-int shop_init(DtBase &dtb)
+int create()
 {
-	int a;
-	string s,n;
-	cout << "\n	Initializing...\n";
-	cout << "\t Hello! Welcome to Shop Managing System\n";
-	cout << "\t Choose the file you save.(*_user.sav,*_goods.sav)\n\n\t";
-	getline(cin,s,'\n');
-	if( s.size()<=1 ) s = "default";
-	dtb.file_name = s;
-	cout << "\tloading " << dtb.file_name << endl;
-	a = dtb.load_all();
-	// if load successfully
-	if(a!=0)
-		return dtb.create();
-	else
-	{
-		cout << "\t Please sign in or quit(input q) \n\t";
-		getline(cin,s,'\n');
-		if(s == "q" || s == "Q") return 0;
-		//User[0] is the administrator
-		n = dtb.login( s , 0 );
-		if( n!="error" )
-		{
-			cout << "\t Sign in successfully!\n\t Welcome, "<< n <<"\n\n";
-			dtb.get_lvl();
-			return 1;
-		}
-		cout << "password wrong!";
-	}
-	return 0;
+	cout << "\t Creating a new file\n";
+	num_cus = 1;
+	cus = new User[10];
+	int a = cus[num_cus-1].add_(1,"Admin");
+	cout <<"\n Administrator is added! \n";
+	lvl = 1;
+	return 1;
 }
+
 
 int User::name_num=1;
 int Goods::name_num=1;
@@ -304,7 +217,7 @@ ostream& operator<<(ostream& ios, Goods& p)
 	return ios;
 }
 
-void DtBase::print_cus(void)
+void print_cus(void)
 {
 	//print all
 	sort( cus , cus+num_cus );
@@ -312,7 +225,7 @@ void DtBase::print_cus(void)
 	cout <<"\tLevel\t\t ID\t\tName\t\tWealth\t\tPhone Number\n";
 	for(int i = 0; i < num_cus ; i++) cout << cus[i] << endl;
 }
-void DtBase::print_gds(void)
+void print_gds(void)
 {
 	//print all
 	sort( gds , gds+num_gds );
@@ -320,11 +233,10 @@ void DtBase::print_gds(void)
 	cout << "\t ID \t Name  \t\tPrice \tStorage \n";
 	for(int i = 0; i<num_gds ; i++) cout << gds[i] << endl;
 }
-void DtBase::print_cus( vector<int> arr )
+void print_cus( vector<int> arr )
 {
 	// to print  the list
-	if(arr.size()==0)
-	{
+	if(arr.size()==0){
 		cout << "\n\tNo Such Customer!\n";
 		return;
 	}
@@ -332,10 +244,9 @@ void DtBase::print_cus( vector<int> arr )
 	cout <<"\tLevel\t\t ID\t\tName\t\tWealth\t\tPhone Number\n";
 	for(int i:arr) cout << cus[i] << endl;
 }
-void DtBase::print_gds( vector<int> arr )
+void print_gds( vector<int> arr )
 {
-	if(arr.size()==0)
-	{
+	if(arr.size()==0)	{
 		cout << "\n\tNo Such Goods!\n";
 		return;
 	}
@@ -344,9 +255,14 @@ void DtBase::print_gds( vector<int> arr )
 	cout << "\t ID \t Name\t\tPrice\tStorage \n";
 	for(int i:arr) cout << gds[i] << endl;
 }
-
+void print_cus( int N ){
+	print_cus( vector<int> (1,N) );
+}
+void print_gds( int N ){
+	print_gds( vector<int> (1,N) );
+}
 // IO part
-int DtBase::save_gds()
+int save_gds()
 {
 	ofstream  fout;
 	fout.open(file_name+"_goods.sp",ios::out);
@@ -355,7 +271,7 @@ int DtBase::save_gds()
 	fout.close();
 	return 0;
 }
-int DtBase::save_cus()
+int save_cus()
 {
 	ofstream  fout;
 	fout.open(file_name+"_user.sp",ios::out);
@@ -364,7 +280,7 @@ int DtBase::save_cus()
 	fout.close();
 	return 0;
 }
-int DtBase::load_gds()
+int load_gds()
 {
 	ifstream  fin;
 	fin.open(file_name+"_goods.sp",ios::in);
@@ -379,7 +295,7 @@ int DtBase::load_gds()
 	fin.close();
 	return 0;
 }
-int DtBase::load_cus()
+int load_cus()
 {
 	ifstream  fin;
 	fin.open(file_name+"_user.sp",ios::in);
@@ -436,8 +352,7 @@ int User::add_(int level_,const string u_name)
 	b = "-";
 	// notice that u need to read a "\n"
 	// rpt means repeat times
-	if(u_name == "")
-	{
+	if(u_name == ""){
 		flag = 1;
 		cout << "\t Name:";
 		while( rpt++ <2 && a=="")getline(cin,a);
@@ -445,8 +360,7 @@ int User::add_(int level_,const string u_name)
 		name = a;
 	}	// do not use content because use Unknown_%d
 	name = a;
-	while(a!=b && cin)
-	{
+	while(a!=b && cin){
 		cout << "\n\t Input password:";
 		getline(cin, a);
 		cout << "\t Confirm password:";
@@ -480,26 +394,24 @@ int Goods::add_()
 	storage = abs(storage);
 	return 0;
 }
-void DtBase::add_cus()
+void add_cus()
 {
 	User *cch;
 	cch = new User[2 + num_cus ];
 	for(int i=0 ; i<num_cus ; i++ ) cch[i]=cus[i];
 	if(num_cus)	delete[]cus;
-	cus = cch;
-	cch = nullptr;
+	cus = cch;	cch = nullptr;
 
 	cout << "\t please input your information below\n";
 	cout << "Input the privilege (1 for top, 2 for manager,others for customer)";
-	char an;
-	cin >> an;
+	char an;	cin >> an;
 
 	if( (an-49)*(an-50)!=0  || lvl == 3  ) an = 51 ;  // asc('1') = 49
 	// when the shop has no manager, u cant create one
 	cout << "\tAdding a "<< lv_name( an - 48 );
 	cus[num_cus++] .add_( an - 48 );
 }
-void DtBase::add_goods()
+void add_goods()
 {
 	Goods *cch;
 	cch = new Goods[2 + num_gds ];
@@ -511,7 +423,7 @@ void DtBase::add_goods()
 	gds[num_gds++].add_();
 }
 
-void DtBase::dlt_cus()
+void dlt_cus()
 {
 	if(num_cus == 0 )
 	{
@@ -536,7 +448,7 @@ void DtBase::dlt_cus()
 	print_cus();
 }
 
-void DtBase::dlt_goods()
+void dlt_goods()
 {
 	if(num_gds == 0 )
 	{
@@ -555,7 +467,7 @@ void DtBase::dlt_goods()
 }
 // Add and Delete Part Completed
 
-void DtBase::chg_cus_info()
+void chg_cus_info()
 {
 	int sub = Get_Target_Customer();
 	if(sub == no_object) return;
@@ -570,7 +482,7 @@ void DtBase::chg_cus_info()
 	//show result
 	print_cus(sub);
 }
-void DtBase::chg_gds_info()
+void chg_gds_info()
 {
 	string s;
 	int sub = Get_Target_Goods();
@@ -627,34 +539,29 @@ int Goods::sold(int num_)
 }
 void User::purchase_(Goods &gd, int &num_)
 {
-	if(lvl == normal)
-	{
+	if(lvl == normal){
 		//customer can not have nagative wealth
 		while( gd.sum_(num_)  > wealth ) (num_)--;
 		cout << "\n\tYou can buy "<<num_;
 		wealth = wealth - gd.sum_( num_ );
 		gd.sold(num_);
 	}
-	else
-	{
+	else{
 		//chief and manager can have nagative wealth
 		wealth = wealth - gd.sum_( num_ );
 		gd.sold(num_);
 	}
 
 }
-void DtBase::user_buy()
-{
+void user_buy(){
 	int num,tgt_p,tgt_g; // p for target person , g for target goods
-
 	tgt_p = Get_Target_Customer();	//  p is the subscript of the target people
 	if(tgt_p == no_object) return;
 
 	cout << "\t Identity checked: "<< cus[ tgt_p ].name_()<<" \tPlease input your password:";
 	string a;
 	getline(cin,a);	//notice that password can be void, so not use get_content
-	if( login( a ,tgt_p ) == "error")
-	{
+	if( login( a ,tgt_p ) == "error")	{
 		cout << "\t Password Wrong!";
 		return;
 	}
@@ -672,7 +579,7 @@ void DtBase::user_buy()
 	print_cus( tgt_p );
 
 }
-void DtBase::user_deposit()
+void user_deposit()
 {
 	int cash,tgt_cus;
 	if( manager_login() )
@@ -690,7 +597,7 @@ void DtBase::user_deposit()
 }
 
 // query returns a vector with all posibilities ( )
-vector<int> DtBase::query_cus(string s)
+vector<int> query_cus(string s)
 {
 	int n =0;
 	// rtn is just a short for return
@@ -707,7 +614,7 @@ vector<int> DtBase::query_cus(string s)
 
 	return rtn;
 }
-vector<int> DtBase::query_goods(string s)   // the same query algorithm as customer query£¬ but ID first
+vector<int> query_goods(string s)   // the same query algorithm as customer query£¬ but ID first
 {
 	int n =0;
 	static vector<int> rtn;
@@ -722,7 +629,7 @@ vector<int> DtBase::query_goods(string s)   // the same query algorithm as custo
 	}
 	return rtn;
 }
-int DtBase::Get_Target_Customer()   // return one single int of target user
+int Get_Target_Customer()   // return one single int of target user
 {
 	vector<int> cch;
 	string a;
@@ -738,7 +645,7 @@ int DtBase::Get_Target_Customer()   // return one single int of target user
 	}
 	return cch[0];
 }
-int DtBase::Get_Target_Goods()   // return one single int of target goods
+int Get_Target_Goods()   // return one single int of target goods
 {
 	vector<int> cch;
 	string a;
@@ -755,17 +662,7 @@ int DtBase::Get_Target_Goods()   // return one single int of target goods
 	return cch[0];
 }
 
-int DtBase::create()
-{
-	cout << "\t Creating a new file\n";
-	num_cus = 1;
-	cus = new User[10];
-	int a = cus[num_cus-1].add_(1,"Admin");
-	cout <<"\n Administrator is added! \n";
-	lvl = 1;
-	return 1;
-}
-void DtBase::macro(void)
+void macro(void)
 {
 	cout << "\n\tNum of all customer:" << num_cus + dlt_;
 	cout << "\n\tNum of live customer:" << num_cus;
@@ -774,22 +671,52 @@ void DtBase::macro(void)
 	cout << "\n\tSum of customer cash:"<< cash_stat( normal );
 	cout << "\n\tSum of cash current:" << cash_stat( boss );
 }
-int DtBase::cash_stat(int level_ )
+int cash_stat(int level_ )
 {
 	int ans = 0;
 	for(int i = 0 ; i< num_cus ; i++ )
-	{
 		if( cus[i].lvl >= level_ ) ans += cus[i].wealth;
-	}
 	return ans;
 }
+int shop_init()
+{
+	int a;
+	string s,n;
+	cout << "\n	Initializing...\n";
+	cout << "\t Hello! Welcome to Shop Managing System\n";
+	cout << "\t Choose the file you save.(*_user.sav,*_goods.sav)\n\n\t";
+	getline(cin,s,'\n');
+	if( s.size()<=1 ) s = "default";
+	file_name = s;
+	cout << "\tloading " << file_name << endl;
+	a = load_cus() + load_gds();
+	// if load successfully
+	if(a!=0)
+		return create();
+	else
+	{
+		cout << "\t Please sign in or quit(input q) \n\t";
+		getline(cin,s,'\n');
+		if(s == "q" || s == "Q") return 0;
+		//User[0] is the administrator
+		n = login( s , 0 );
+		if( n!="error" )
+		{
+			cout << "\t Sign in successfully!\n\t Welcome, "<< n <<"\n\n";
+			lvl = cus[0].lvl;
+			return 1;
+		}
+		cout << "password wrong!";
+	}
+	return 0;
+}
 
-int interact(DtBase &sp)
+int interact()
 {
 	char input;
 	vector<int> b;
 	string s;
-	cout << "\n\t Operation Privilege:\t " << lv_name( sp.lvl ) << endl;
+	cout << "\n\t Operation Privilege:\t " << lv_name( lvl ) << endl;
 	cout << "\n\t What operation do you want to do next\n";
 	cout << "\t 1 :Print all customers" << endl;
 	cout << "\t 2 :Print all Goods" << endl;
@@ -800,8 +727,7 @@ int interact(DtBase &sp)
 	cout << "\t 7 :Query customer info" << endl;
 	cout << "\t 8 :Query goods info" << endl;
 	cout << "\t 9 :Macroscope Query" << endl;
-	if(sp.lvl <= 2)
-	{
+	if(lvl <= 2){
 		cout << "\t q :Change Customer Info" << endl;
 		cout << "\t w :Change Goods Info" << endl;
 		cout << "\t e :Delete a customer" << endl;
@@ -810,68 +736,52 @@ int interact(DtBase &sp)
 	cout << "\n\t ~: Clear Screen" << endl;
 	cout << "\t 0 :Save & Quit" << endl;
 	input = getch();
-	if(sp.lvl == normal && input >= 56) input = '`';
+	if(lvl == normal && input >= 56) input = '`';
 	switch(input)
 	{
 		case '`':
-			system("cls");
-			break;
+			system("cls");	break;
 		case '0':
-			return 0;
-			break;
+			return 0;		break;
 		case '1':
-			sp.print_cus();
-			break;
+			print_cus();	break;
 		case '2':
-			sp.print_gds();
-			break;
+			print_gds();	break;
 		case '3':
-			sp.add_cus();
-			break;
+			add_cus();		break;
 		case '4':
-			sp.add_goods();
-			break;
+			add_goods();	break;
 		case '5':
-			sp.user_buy();
-			break;
+			user_buy();		break;
 		case '6':
-			sp.user_deposit();
-			break;
+			user_deposit();	break;
 		case '7':
 			cout << "\tInput the keyword or part of ID:";
 			while( s.size()==0 )getline(cin,s);
-			b = sp.query_cus(s);
-			sp.print_cus( b );
+			b = query_cus(s);	print_cus( b );
 			break;
 		case '8':
 			cout << "\tInput the keyword or part of ID:";
 			while( s.size()==0 )getline(cin,s);
-			b = sp.query_goods(s);
-			sp.print_gds( b );
+			b = query_goods(s);	print_gds( b );
 			break;
 		case '9':
-			sp.macro();
-			break;
+			macro();		break;
 		case 'q':
-			sp.chg_cus_info();
-			break;
+			chg_cus_info();	break;
 		case 'w':
-			sp.chg_gds_info();
-			break;
+			chg_gds_info();	break;
 		case 'e':
-			sp.dlt_cus();
-			break;
+			dlt_cus();		break;
 		case 'r':
-			sp.dlt_goods();
-			break;
+			dlt_goods();	break;
 	}
 	return input;
 }
-int farewell(DtBase &sp)
-{
-	// for save and quit
+int farewell(){
+	// save and quit
 	cout << "\n\t Saving.\n";
-	sp.save_all();
+	save_cus(); save_gds();
 	cout << "\t Looking forward to your next use\n";
 	cout << "\t Goodbye!\n";
 	return 0;
@@ -880,16 +790,13 @@ int farewell(DtBase &sp)
 int main(int argc, char** argv)
 {
 	int state;
-	DtBase shop;
-	state = shop_init(shop);
+
+	state = shop_init();
 	while(state && cin)  	//notice that maybe some noob can input ^Z
 	{
-		state = interact( shop );
+		state = interact( );
 		//system("pause");
 	}
-	farewell(shop);
+	farewell();
 	return 0;
 }
-
-
-
