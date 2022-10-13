@@ -1,7 +1,7 @@
 # MIKU's ShopSystem Readme.md
 - Manager : Sun Jianyao
 - Coding : Hu Zhengtao ， Zhou JiaChen 
-- This program is for the final work of C++ learning courses.
+- This program is for the team work of C++ learning courses.
 #### Thanks
     Thanks to Mr.Zhou's persistent work, he give us the first version and framework of the program
     Thanks to Mr.Hu's for his reconstruction of coding, and he write this readme.md
