@@ -19,23 +19,18 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
         Any Computer with 64-bit Windows OS
         A available keyboard
     2.install
-        Just double click the shop.exe or open the cmd input " ~/shop" , ~ is where the shop.exe stays
+        Just double click the shop.exe or open the cmd input " ~/shop" , ~ is absolute location in PC where shop.exe stays
         Or you can compile the source code 
         Source: (You can get it from https://github.com/Hizi70k/Final_work/tree/master/Desktop/cpp/BigWork_1/ForGit)
 
-<<<<<<< HEAD
-        |Objected Oriented   | Procedure Oriented
-        |--------------------|--------------------
-        |ShopSys.h           | null
-        |ShopSys.cpp         | null
-        |Shop.cpp            | main.cpp
+
 =======
-| Objected Oriented   | Procedure Oriented|
-|---|---
-| ShopSys.h           | null              |
-| ShopSys.cpp         | null              |
-| Shop.cpp            | main.cpp          |
->>>>>>> b62cde3c35eedc5d162b4be23f0720b6e28db47f
+| Object  | Objected Oriented   | Procedure Oriented|
+|---|---|---
+| Library  | ShopSys.h           | null              |
+| implementation  | ShopSys.cpp         | null              |
+| Main Code  | Shop.cpp            | main.cpp          |
+
 
 ## 3. Operation Instruction
     Just do what you want as the program shows you
@@ -118,8 +113,5 @@ Then he saw a Miku doll( called Fuwafuwa, short as Fufu ) and a Miku model, then
             void print_gds( int N ){	print_gds( vector<int> (1,N) );	}
 
             void macro(void);
-             //macroscope to show the quantity of live users and others
-
-           
-
+             //macroscope to show the quantity of available users and others
 
